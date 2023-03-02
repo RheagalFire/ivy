@@ -1296,7 +1296,6 @@ def test_tensorflow_one_hot(
     test_flags,
     on_device,
 ):
-
     input_dtype, x = dtype_and_x
     depth = 10
     helpers.test_frontend_function(
@@ -1545,7 +1544,7 @@ def test_tensorflow_split(
         valid_axis=True,
         force_int_axis=True,
     ),
-    repeats=helpers.ints(min_value=1, max_value=5)
+    repeats=helpers.ints(min_value=1, max_value=5),
 )
 def test_tensorflow_repeat(
     *,
@@ -1566,5 +1565,32 @@ def test_tensorflow_repeat(
         on_device=on_device,
         input=x[0],
         repeats=repeats,
-        axis=axis
+        axis=axis,
+    )
+
+
+@handle_frontend_test(
+    fn_tree="tensorflow.unstack",
+    dtypes_value_axis=helpers.dtype_values_axis(
+        available_dtypes=helpers.get_dtypes("float"),
+        num_arrays=1,
+        min_value=-100,
+        max_value=100,
+        min_num_dims=2,
+        # shape=st.shared(helpers.get_shape(min_num_dims=2), key="shape"),
+    ),
+)
+def test_tensorflow_unstack(
+    dtypes_value_axis, on_device, fn_tree, frontend, test_flags
+):
+    x_dtype, x, axis = dtypes_value_axis
+    print("Following are the variables: ", x_dtype, x[0], axis)
+    helpers.test_frontend_function(
+        input_dtypes=x_dtype,
+        frontend=frontend,
+        test_flags=test_flags,
+        fn_tree=fn_tree,
+        on_device=on_device,
+        value=x[0]
+        # axis=axis,
     )
