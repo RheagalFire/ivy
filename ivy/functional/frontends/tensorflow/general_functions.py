@@ -347,7 +347,28 @@ def roll(input, shift, axis, name=None):
 
 
 @to_ivy_arrays_and_back
+<<<<<<< HEAD
 @with_unsupported_dtypes({"1.11.0 and below": ("float16", "bfloat16")}, "torch")
 def unstack(value: ivy.array, axis=0, num=None, name=None):
     res = ivy.unstack(value, axis=axis)
     return ivy.astype(res, value.dtype)
+=======
+def split(
+    value, num_or_size_splits, axis=0, num=None, name=None
+):
+    return ivy.split(
+        value,
+        num_or_size_splits=num_or_size_splits,
+        axis=axis,
+        with_remainder=False
+    )
+
+
+def repeat(
+        input,
+        repeats,
+        axis=None,
+        name=None,
+):
+    return ivy.repeat(input, repeats, axis=axis)
+>>>>>>> 34c4757360cc709d6e372759369fc4c6c1c7d46e
