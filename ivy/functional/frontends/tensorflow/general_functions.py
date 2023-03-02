@@ -344,3 +344,10 @@ def where(condition: ivy.array, x=None, y=None, name=None):
 
 def roll(input, shift, axis, name=None):
     return ivy.roll(input, shift, axis=axis)
+
+
+@to_ivy_arrays_and_back
+@with_unsupported_dtypes({"1.11.0 and below": ("float16", "bfloat16")}, "torch")
+def unstack(value: ivy.array, axis=0, num=None, name=None):
+    res = ivy.unstack(value, axis=axis)
+    return ivy.astype(res, value.dtype)
